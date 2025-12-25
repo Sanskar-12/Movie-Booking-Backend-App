@@ -1,0 +1,17 @@
+{
+  "name": "movie_booking_backend_app",
+  "version": "1.0.0",
+  "description": "This is a Backend Api application for Movie Booking, similar to BookMyShow",
+  "license": "ISC",
+  "author": "Sanskar Vishwakarma",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.2"
+  }
+}
