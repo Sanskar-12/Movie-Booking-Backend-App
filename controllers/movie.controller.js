@@ -65,3 +65,29 @@ export const deleteMovie = async (req, res) => {
     });
   }
 };
+
+export const getMovie = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+
+    const movie = await Movie.findById(movieId);
+
+    if (!movie) {
+      return res.status(404).json({
+        success: false,
+        message: "Movie not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      movie,
+    });
+  } catch (error) {
+    console.log("Error in getMovie", error);
+    return res.status(500).json({
+      success: false,
+      message: `getMovie Error: ${error}`,
+    });
+  }
+};
