@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Movie } from "../models/movie.model.js";
 
 const connectToDB = async () => {
   try {
