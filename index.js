@@ -9,6 +9,7 @@ connectToDB();
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/working", (req, res) => {
   return res.status(200).json({
