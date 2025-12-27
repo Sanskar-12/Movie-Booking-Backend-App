@@ -1,4 +1,5 @@
 import { Movie } from "../models/movie.model.js";
+import { requiredFields } from "../utils/index.js";
 
 export const createMovie = async (req, res) => {
   try {
@@ -12,6 +13,35 @@ export const createMovie = async (req, res) => {
       director,
       releaseStatus,
     } = req.body;
+
+    for (const field in requiredFields) {
+      if (
+        !req.body[field] ||
+        (Array.isArray(req.body[field]) && req.body[field].length === 0)
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: requiredFields[field],
+        });
+      }
+    }
+
+    if (name.length <= 2 && description.length <= 5) {
+      return res.status(500).json({
+        success: false,
+        message: `Name should be of minlength 2 and Description should be of minlength 5`,
+      });
+    } else if (name.length <= 2) {
+      return res.status(500).json({
+        success: false,
+        message: `Name should be of minlength 2`,
+      });
+    } else if (description.length <= 5) {
+      return res.status(500).json({
+        success: false,
+        message: `Description should be of minlength 5`,
+      });
+    }
 
     const movie = await Movie.create({
       name,
@@ -30,10 +60,11 @@ export const createMovie = async (req, res) => {
       message: "Created New Movie Successfully",
     });
   } catch (error) {
-    console.log("Error in createMovie", error);
+    console.log("Error in createMovie", error.errors);
+
     return res.status(500).json({
       success: false,
-      message: `createMovie Error: ${error}`,
+      message: `create Movie Error: ${error}`,
     });
   }
 };
