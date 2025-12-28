@@ -5,12 +5,16 @@ import {
   getMovie,
   updateMovie,
 } from "../controllers/movie.controller.js";
+import {
+  validateMovieCreateRequest,
+  validateMovieUpdateRequest,
+} from "../middlewares/movie.middlewares.js";
 
 const movieRouter = express.Router();
 
-movieRouter.post("/movies", createMovie);
+movieRouter.post("/movies", validateMovieCreateRequest, createMovie);
 movieRouter.delete("/movies/:movieId", deleteMovie);
 movieRouter.get("/movies/:movieId", getMovie);
-movieRouter.put("/movies/:movieId", updateMovie);
+movieRouter.put("/movies/:movieId", validateMovieUpdateRequest, updateMovie);
 
 export default movieRouter;
