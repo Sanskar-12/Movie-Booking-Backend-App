@@ -122,3 +122,68 @@ export const getMovie = async (req, res) => {
     });
   }
 };
+
+export const updateMovie = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const {
+      name,
+      description,
+      casts,
+      trailerUrl,
+      lang,
+      releaseDate,
+      director,
+      releaseStatus,
+    } = req.body;
+
+    if (name && description && name.length <= 2 && description.length <= 5) {
+      return res.status(500).json({
+        success: false,
+        message: `Name should be of minlength 2 and Description should be of minlength 5`,
+      });
+    } else if (name && name.length <= 2) {
+      return res.status(500).json({
+        success: false,
+        message: `Name should be of minlength 2`,
+      });
+    } else if (description && description.length <= 5) {
+      return res.status(500).json({
+        success: false,
+        message: `Description should be of minlength 5`,
+      });
+    }
+
+    const movie = await Movie.findById(movieId);
+
+    if (!movie) {
+      return res.status(404).json({
+        success: false,
+        message: "Movie not found",
+      });
+    }
+
+    if (name) movie.name = name;
+    if (description) movie.description = description;
+    if (casts) movie.casts = casts;
+    if (trailerUrl) movie.trailerUrl = trailerUrl;
+    if (lang) movie.lang = lang;
+    if (releaseDate) movie.releaseDate = releaseDate;
+    if (director) movie.director = director;
+    if (releaseStatus) movie.releaseStatus = releaseStatus;
+
+    await movie.save();
+
+    return res.status(200).json({
+      success: true,
+      movie,
+      message: "Movie Updated Successfully",
+    });
+  } catch (error) {
+    console.log("Error in updateMovie", error);
+    return res.status(500).json({
+      success: false,
+      message: `updateMovie Error: ${error}`,
+    });
+  }
+};
