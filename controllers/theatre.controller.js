@@ -82,7 +82,23 @@ export const getTheatre = async (req, res) => {
 
 export const getAllTheatres = async (req, res) => {
   try {
-    const theatres = await Theatre.find({});
+    const { city, name, pincode, page = 1, limit = 10 } = req.query;
+
+    let query = {};
+
+    if (city) {
+      query.city = { $regex: city, $options: "i" };
+    }
+    if (pincode) {
+      query.pincode = Number(pincode);
+    }
+    if (name) {
+      query.name = { $regex: name, $options: "i" };
+    }
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const theatres = await Theatre.find(query).skip(skip).limit(Number(limit));
 
     if (!theatres) {
       return res.status(404).json({
@@ -91,9 +107,17 @@ export const getAllTheatres = async (req, res) => {
       });
     }
 
+    const total = await Theatre.countDocuments(query);
+
     return res.status(200).json({
       success: true,
       data: theatres,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     console.log("Error in getAllTheatres", error);
