@@ -1,5 +1,4 @@
 import { Movie } from "../models/movie.model.js";
-import { requiredFields } from "../utils/index.js";
 
 export const createMovie = async (req, res) => {
   try {
@@ -83,7 +82,7 @@ export const getMovie = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      movie,
+      data: movie,
     });
   } catch (error) {
     console.log("Error in getMovie", error);
@@ -147,7 +146,7 @@ export const updateMovie = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      movie,
+      data: movie,
       message: "Movie Updated Successfully",
     });
   } catch (error) {
@@ -180,7 +179,7 @@ export const getMoviesByName = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      movies,
+      data: movies,
     });
   } catch (error) {
     console.log("Error in getMovies", error);

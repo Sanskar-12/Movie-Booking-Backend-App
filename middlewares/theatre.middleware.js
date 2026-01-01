@@ -10,5 +10,12 @@ export const validateCreateTheatreRequest = (req, res, next) => {
     }
   }
 
+  if (req.body.name.length <= 5) {
+    return res.status(500).json({
+      success: false,
+      message: `Name should be of minlength 5`,
+    });
+  }
+
   next();
 };
