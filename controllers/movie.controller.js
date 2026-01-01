@@ -107,23 +107,6 @@ export const updateMovie = async (req, res) => {
       releaseStatus,
     } = req.body;
 
-    if (name && description && name.length <= 2 && description.length <= 5) {
-      return res.status(500).json({
-        success: false,
-        message: `Name should be of minlength 2 and Description should be of minlength 5`,
-      });
-    } else if (name && name.length <= 2) {
-      return res.status(500).json({
-        success: false,
-        message: `Name should be of minlength 2`,
-      });
-    } else if (description && description.length <= 5) {
-      return res.status(500).json({
-        success: false,
-        message: `Description should be of minlength 5`,
-      });
-    }
-
     const movie = await Movie.findById(movieId);
 
     if (!movie) {

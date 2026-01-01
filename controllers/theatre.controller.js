@@ -103,3 +103,50 @@ export const getAllTheatres = async (req, res) => {
     });
   }
 };
+
+export const updateTheatre = async (req, res) => {
+  try {
+    const { theatreId } = req.params;
+
+    const { name, description, city, pincode, address } = req.body;
+
+    const theatre = await Theatre.findById(theatreId);
+
+    if (!theatre) {
+      return res.status(404).json({
+        success: false,
+        message: "Theatre not found",
+      });
+    }
+
+    if (name) {
+      theatre.name = name;
+    }
+    if (description) {
+      theatre.description = description;
+    }
+    if (city) {
+      theatre.city = city;
+    }
+    if (pincode) {
+      theatre.pincode = pincode;
+    }
+    if (address) {
+      theatre.address = address;
+    }
+
+    await theatre.save();
+
+    return res.status(200).json({
+      success: true,
+      data: theatre,
+      message: "Theatre Updated Successfully",
+    });
+  } catch (error) {
+    console.log("Error in updateTheatre", error);
+    return res.status(500).json({
+      success: false,
+      message: `updateTheatre Error: ${error}`,
+    });
+  }
+};
