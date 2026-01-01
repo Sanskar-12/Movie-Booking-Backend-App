@@ -50,6 +50,12 @@ export const validateUpdateMoviesInTheatreRequest = (req, res, next) => {
       message: "Expected array of movies but found something else",
     });
   }
+  if (req.body.movieIds.length <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "No movies present in the Movie Array provided",
+    });
+  }
 
   next();
 };
