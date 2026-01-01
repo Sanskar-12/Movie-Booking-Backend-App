@@ -206,6 +206,8 @@ export const updateMoviesInTheatre = async (req, res) => {
 
     await theatre.save();
 
+    await theatre.populate("movies");
+
     return res.status(200).json({
       success: true,
       data: theatre,
