@@ -166,7 +166,7 @@ export const getMoviesByName = async (req, res) => {
     const { name } = req.query;
 
     if (name) {
-      query.name = name;
+      query.name = { $regex: name, $options: "i" };
     }
 
     const movies = await Movie.find(query);
