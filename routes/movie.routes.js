@@ -3,6 +3,7 @@ import {
   createMovie,
   deleteMovie,
   getMovie,
+  getMoviesByName,
   updateMovie,
 } from "../controllers/movie.controller.js";
 import {
@@ -16,5 +17,6 @@ movieRouter.post("/movies", validateMovieCreateRequest, createMovie);
 movieRouter.delete("/movies/:movieId", deleteMovie);
 movieRouter.get("/movies/:movieId", getMovie);
 movieRouter.put("/movies/:movieId", validateMovieUpdateRequest, updateMovie);
+movieRouter.get("/movies", getMoviesByName);
 
 export default movieRouter;

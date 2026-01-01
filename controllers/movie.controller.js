@@ -158,3 +158,35 @@ export const updateMovie = async (req, res) => {
     });
   }
 };
+
+export const getMoviesByName = async (req, res) => {
+  try {
+    let query = {};
+
+    const { name } = req.query;
+
+    if (name) {
+      query.name = name;
+    }
+
+    const movies = await Movie.find(query);
+
+    if (!movies) {
+      return res.status(400).json({
+        success: false,
+        message: "No movies found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      movies,
+    });
+  } catch (error) {
+    console.log("Error in getMovies", error);
+    return res.status(500).json({
+      success: false,
+      message: `getMovies Error: ${error}`,
+    });
+  }
+};
