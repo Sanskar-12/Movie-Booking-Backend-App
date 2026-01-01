@@ -8,3 +8,9 @@ export const requiredFields = {
   director: "Director is required",
   releaseStatus: "Release status is required",
 };
+
+export const requiredFieldsForTheatre = {
+  name: "Name is required",
+  city: "City is required",
+  pincode: "Pincode is required",
+};
