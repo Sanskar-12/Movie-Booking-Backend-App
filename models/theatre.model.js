@@ -21,6 +21,12 @@ const schema = new mongoose.Schema(
     address: {
       type: String,
     },
+    movies: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Movie",
+      },
+    ],
   },
   {
     timestamps: true,

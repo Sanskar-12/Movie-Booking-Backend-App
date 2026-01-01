@@ -174,3 +174,48 @@ export const updateTheatre = async (req, res) => {
     });
   }
 };
+
+export const updateMoviesInTheatre = async (req, res) => {
+  try {
+    const { theatreId } = req.params;
+
+    const { movieIds, insert } = req.body;
+
+    const theatre = await Theatre.findById(theatreId);
+
+    if (!theatre) {
+      return res.status(404).json({
+        success: false,
+        message: "Theatre not found",
+      });
+    }
+
+    if (insert) {
+      // we need to add the movieIds
+      movieIds.forEach((movieId) => {
+        if (!theatre.movies.includes(movieId)) {
+          theatre.movies.push(movieId);
+        }
+      });
+    } else {
+      // we need to remove the movieIds
+      movieIds.forEach((movieId) => {
+        theatre.movies = theatre.movies.filter((id) => id != movieId);
+      });
+    }
+
+    await theatre.save();
+
+    return res.status(200).json({
+      success: true,
+      data: theatre,
+      message: "Movies Updated Successfully in Theatre",
+    });
+  } catch (error) {
+    console.log("Error in updateMoviesInTheatre", error);
+    return res.status(500).json({
+      success: false,
+      message: `updateMoviesInTheatre Error: ${error}`,
+    });
+  }
+};

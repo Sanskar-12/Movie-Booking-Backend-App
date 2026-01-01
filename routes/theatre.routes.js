@@ -8,6 +8,7 @@ import {
   deleteTheatre,
   getAllTheatres,
   getTheatre,
+  updateMoviesInTheatre,
   updateTheatre,
 } from "../controllers/theatre.controller.js";
 
@@ -22,5 +23,6 @@ theatreRouter.put(
   validateUpdateTheatreRequest,
   updateTheatre
 );
+theatreRouter.patch(`/theatres/:theatreId`, updateMoviesInTheatre);
 
 export default theatreRouter;
