@@ -1,6 +1,7 @@
 import express from "express";
 import {
   validateCreateTheatreRequest,
+  validateUpdateMoviesInTheatreRequest,
   validateUpdateTheatreRequest,
 } from "../middlewares/theatre.middleware.js";
 import {
@@ -23,6 +24,10 @@ theatreRouter.put(
   validateUpdateTheatreRequest,
   updateTheatre
 );
-theatreRouter.patch(`/theatres/:theatreId`, updateMoviesInTheatre);
+theatreRouter.patch(
+  `/theatres/:theatreId`,
+  validateUpdateMoviesInTheatreRequest,
+  updateMoviesInTheatre
+);
 
 export default theatreRouter;

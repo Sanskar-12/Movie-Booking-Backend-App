@@ -30,3 +30,26 @@ export const validateUpdateTheatreRequest = (req, res, next) => {
 
   next();
 };
+
+export const validateUpdateMoviesInTheatreRequest = (req, res, next) => {
+  if (!req.body.insert) {
+    return res.status(400).json({
+      success: false,
+      message: "insert parameter is required",
+    });
+  }
+  if (!req.body.movieIds) {
+    return res.status(400).json({
+      success: false,
+      message: "movieIds parameter is required",
+    });
+  }
+  if (!(req.body.movieIds instanceof Array)) {
+    return res.status(400).json({
+      success: false,
+      message: "Expected array of movies but found something else",
+    });
+  }
+
+  next();
+};
