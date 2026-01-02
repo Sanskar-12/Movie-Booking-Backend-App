@@ -1,4 +1,5 @@
 import { Theatre } from "../models/theatre.model.js";
+import mongoose from "mongoose";
 
 export const createTheatre = async (req, res) => {
   try {
@@ -82,7 +83,7 @@ export const getTheatre = async (req, res) => {
 
 export const getAllTheatres = async (req, res) => {
   try {
-    const { city, name, pincode, page = 1, limit = 10 } = req.query;
+    const { city, name, pincode, movieId, page = 1, limit = 10 } = req.query;
 
     let query = {};
 
@@ -94,6 +95,9 @@ export const getAllTheatres = async (req, res) => {
     }
     if (name) {
       query.name = { $regex: name, $options: "i" };
+    }
+    if (movieId) {
+      query.movies = { $in: [new mongoose.Types.ObjectId(movieId)] };
     }
 
     const skip = (Number(page) - 1) * Number(limit);

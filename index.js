@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectToDB from "./config/db.js";
 import movieRouter from "./routes/movie.routes.js";
 import theatreRouter from "./routes/theatre.routes.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+mongoose.set("debug", true);
 
 app.get("/working", (req, res) => {
   return res.status(200).json({
