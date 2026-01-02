@@ -8,6 +8,7 @@ import {
   createTheatre,
   deleteTheatre,
   getAllTheatres,
+  getMoviesInATheatre,
   getTheatre,
   updateMoviesInTheatre,
   updateTheatre,
@@ -29,5 +30,6 @@ theatreRouter.patch(
   validateUpdateMoviesInTheatreRequest,
   updateMoviesInTheatre
 );
+theatreRouter.get(`/theatres/:theatreId/movies`, getMoviesInATheatre);
 
 export default theatreRouter;

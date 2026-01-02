@@ -225,3 +225,31 @@ export const updateMoviesInTheatre = async (req, res) => {
     });
   }
 };
+
+export const getMoviesInATheatre = async (req, res) => {
+  try {
+    const { theatreId } = req.params;
+
+    const theatre = await Theatre.findById(theatreId)
+      .select("name movies address")
+      .populate("movies");
+
+    if (!theatre) {
+      return res.status(404).json({
+        success: false,
+        message: "Theatre not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: theatre,
+    });
+  } catch (error) {
+    console.log("Error in getMoviesInATheatre", error);
+    return res.status(500).json({
+      success: false,
+      message: `getMoviesInATheatre Error: ${error}`,
+    });
+  }
+};
