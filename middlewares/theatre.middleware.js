@@ -32,7 +32,7 @@ export const validateUpdateTheatreRequest = (req, res, next) => {
 };
 
 export const validateUpdateMoviesInTheatreRequest = (req, res, next) => {
-  if (!req.body.insert) {
+  if (req.body.insert === undefined) {
     return res.status(400).json({
       success: false,
       message: "insert parameter is required",
