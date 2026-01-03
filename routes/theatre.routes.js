@@ -5,6 +5,7 @@ import {
   validateUpdateTheatreRequest,
 } from "../middlewares/theatre.middleware.js";
 import {
+  checkMovieInTheatre,
   createTheatre,
   deleteTheatre,
   getAllTheatres,
@@ -31,5 +32,6 @@ theatreRouter.patch(
   updateMoviesInTheatre
 );
 theatreRouter.get(`/theatres/:theatreId/movies`, getMoviesInATheatre);
+theatreRouter.get(`/theatres/:theatreId/movie/:movieId`, checkMovieInTheatre);
 
 export default theatreRouter;

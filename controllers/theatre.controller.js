@@ -253,3 +253,38 @@ export const getMoviesInATheatre = async (req, res) => {
     });
   }
 };
+
+export const checkMovieInTheatre = async (req, res) => {
+  try {
+    const { theatreId, movieId } = req.params;
+
+    const theatre = await Theatre.findById(theatreId);
+
+    if (!theatre) {
+      return res.status(404).json({
+        success: false,
+        message: "Theatre Not Found",
+      });
+    }
+
+    const check = theatre.movies.includes(movieId);
+
+    if (check) {
+      return res.status(200).json({
+        success: true,
+        message: "Movie is present inside this theatre",
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: "Movie is not present inside this theatre",
+      });
+    }
+  } catch (error) {
+    console.log("Error in checkMovieInTheatre", error);
+    return res.status(500).json({
+      success: false,
+      message: `checkMovieInTheatre Error: ${error}`,
+    });
+  }
+};
