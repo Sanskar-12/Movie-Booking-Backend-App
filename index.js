@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectToDB from "./config/db.js";
 import movieRouter from "./routes/movie.routes.js";
 import theatreRouter from "./routes/theatre.routes.js";
+import authRouter from "./routes/auth.routes.js";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get("/working", (req, res) => {
 });
 app.use("/mba/api/v1", movieRouter);
 app.use("/mba/api/v1", theatreRouter);
+app.use("/mba/api/v1", authRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is listening on port ${process.env.PORT}`);
