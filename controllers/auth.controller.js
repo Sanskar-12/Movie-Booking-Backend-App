@@ -4,7 +4,16 @@ export const signUp = async (req, res) => {
   try {
     const { name, email, password, userRole, userStatus } = req.body;
 
-    const user = await User.create({
+    const user = await User.find({ email });
+
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists with this email",
+      });
+    }
+
+    user = await User.create({
       name,
       email,
       password,
@@ -35,6 +44,18 @@ export const signUp = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `signUp Error: ${error}`,
+    });
+  }
+};
+
+export const signIn = (req, res) => {
+  try {
+    const { email, password } = req.body;
+  } catch (error) {
+    console.log("Error in signIn", error);
+    return res.status(500).json({
+      success: false,
+      message: `signIn Error: ${error}`,
     });
   }
 };
