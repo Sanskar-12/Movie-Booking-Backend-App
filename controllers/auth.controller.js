@@ -4,7 +4,7 @@ export const signUp = async (req, res) => {
   try {
     const { name, email, password, userRole, userStatus } = req.body;
 
-    const user = await User.find({ email });
+    let user = await User.findOne({ email });
 
     if (user) {
       return res.status(400).json({
@@ -51,6 +51,8 @@ export const signUp = async (req, res) => {
 export const signIn = (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // const user
   } catch (error) {
     console.log("Error in signIn", error);
     return res.status(500).json({
