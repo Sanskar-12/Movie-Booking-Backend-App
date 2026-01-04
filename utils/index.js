@@ -14,3 +14,9 @@ export const requiredFieldsForTheatre = {
   city: "City is required",
   pincode: "Pincode is required",
 };
+
+export const requiredFieldsForUser = {
+  name: "Name is required",
+  email: "Email is required",
+  password: "Password is required",
+};
