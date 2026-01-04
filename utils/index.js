@@ -20,3 +20,8 @@ export const requiredFieldsForUser = {
   email: "Email is required",
   password: "Password is required",
 };
+
+export const requiredFieldsForUserSignIn = {
+  email: "Email is required",
+  password: "Password is required",
+};

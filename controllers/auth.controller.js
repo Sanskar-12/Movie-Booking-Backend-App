@@ -1,4 +1,6 @@
 import { User } from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import generateToken from "../utils/genToken.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -21,9 +23,14 @@ export const signUp = async (req, res) => {
       userStatus,
     });
 
+    // remove password from user json
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+
     return res.status(200).json({
       success: true,
       data: user,
+      message: "User Signed up Successfully",
     });
   } catch (error) {
     console.log("Error in signUp", error);
@@ -48,11 +55,46 @@ export const signUp = async (req, res) => {
   }
 };
 
-export const signIn = (req, res) => {
+export const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // const user
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Email or Password is invalid",
+      });
+    }
+
+    let isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Email or Password is invalid",
+      });
+    }
+
+    const token = generateToken(user);
+
+    // remove password from user json
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "Strict",
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: userWithoutPassword,
+      message: "User Signed in Successfully",
+    });
   } catch (error) {
     console.log("Error in signIn", error);
     return res.status(500).json({
