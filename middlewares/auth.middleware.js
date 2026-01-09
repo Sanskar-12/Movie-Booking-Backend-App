@@ -2,6 +2,7 @@ import {
   requiredFieldsForUser,
   requiredFieldsForUserSignIn,
 } from "../utils/index.js";
+import jwt from "jsonwebtoken";
 
 export const validateUserCreateRequest = (req, res, next) => {
   for (const field in requiredFieldsForUser) {
@@ -33,4 +34,33 @@ export const validateUserSigninRequest = (req, res, next) => {
   }
 
   next();
+};
+
+export const isAuthenticated = (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+
+    if (!token) {
+      return res.status(400).json({
+        success: true,
+        message: "User doesn't have token",
+      });
+    }
+
+    const verify = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!verify) {
+      return res.status(400).json({ message: "Token is invalid" });
+    }
+
+    req.user = verify;
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: `isAuth error ${error}`,
+    });
+  }
 };
