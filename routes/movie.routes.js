@@ -34,6 +34,7 @@ movieRouter.get("/movies/:movieId", getMovie);
 movieRouter.put(
   "/movies/:movieId",
   isAuthenticated,
+  isAdminOrClient,
   validateMovieUpdateRequest,
   updateMovie
 );
