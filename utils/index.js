@@ -25,3 +25,8 @@ export const requiredFieldsForUserSignIn = {
   email: "Email is required",
   password: "Password is required",
 };
+
+export const requiredFieldsForResetPassword = {
+  oldPassword: "Old Password is required",
+  newPassword: "New Password is required",
+};

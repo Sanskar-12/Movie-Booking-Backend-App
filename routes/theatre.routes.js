@@ -20,8 +20,8 @@ const theatreRouter = express.Router();
 
 theatreRouter.post(
   `/theatres`,
-  validateCreateTheatreRequest,
   isAuthenticated,
+  validateCreateTheatreRequest,
   createTheatre
 );
 theatreRouter.get(`/theatres/:theatreId`, getTheatre);
@@ -29,14 +29,14 @@ theatreRouter.delete(`/theatres/:theatreId`, isAuthenticated, deleteTheatre);
 theatreRouter.get(`/theatres`, getAllTheatres);
 theatreRouter.put(
   `/theatres/:theatreId`,
-  validateUpdateTheatreRequest,
   isAuthenticated,
+  validateUpdateTheatreRequest,
   updateTheatre
 );
 theatreRouter.patch(
   `/theatres/:theatreId`,
-  validateUpdateMoviesInTheatreRequest,
   isAuthenticated,
+  validateUpdateMoviesInTheatreRequest,
   updateMoviesInTheatre
 );
 theatreRouter.get(`/theatres/:theatreId/movies`, getMoviesInATheatre);

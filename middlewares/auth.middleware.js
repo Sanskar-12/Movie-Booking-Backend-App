@@ -1,4 +1,5 @@
 import {
+  requiredFieldsForResetPassword,
   requiredFieldsForUser,
   requiredFieldsForUserSignIn,
 } from "../utils/index.js";
@@ -63,4 +64,17 @@ export const isAuthenticated = (req, res, next) => {
       message: `isAuth error ${error}`,
     });
   }
+};
+
+export const validateResetPasswordRequest = async (req, res, next) => {
+  for (const field in requiredFieldsForResetPassword) {
+    if (!req.body[field]) {
+      return res.status(400).json({
+        success: false,
+        message: requiredFieldsForResetPassword[field],
+      });
+    }
+  }
+
+  next();
 };

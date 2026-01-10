@@ -6,6 +6,7 @@ import {
 } from "../controllers/auth.controller.js";
 import {
   isAuthenticated,
+  validateResetPasswordRequest,
   validateUserCreateRequest,
   validateUserSigninRequest,
 } from "../middlewares/auth.middleware.js";
@@ -14,6 +15,11 @@ const authRouter = express.Router();
 
 authRouter.post(`/auth/signup`, validateUserCreateRequest, signUp);
 authRouter.post(`/auth/signin`, validateUserSigninRequest, signIn);
-authRouter.patch(`/auth/reset/:userId`, isAuthenticated, resetPassword);
+authRouter.patch(
+  `/auth/reset/:userId`,
+  isAuthenticated,
+  validateResetPasswordRequest,
+  resetPassword
+);
 
 export default authRouter;

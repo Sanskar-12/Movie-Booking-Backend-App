@@ -16,16 +16,16 @@ const movieRouter = express.Router();
 
 movieRouter.post(
   "/movies",
-  validateMovieCreateRequest,
   isAuthenticated,
+  validateMovieCreateRequest,
   createMovie
 );
 movieRouter.delete("/movies/:movieId", isAuthenticated, deleteMovie);
 movieRouter.get("/movies/:movieId", getMovie);
 movieRouter.put(
   "/movies/:movieId",
-  validateMovieUpdateRequest,
   isAuthenticated,
+  validateMovieUpdateRequest,
   updateMovie
 );
 movieRouter.get("/movies", getMoviesByName);
