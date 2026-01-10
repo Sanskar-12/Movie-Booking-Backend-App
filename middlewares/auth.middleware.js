@@ -1,5 +1,5 @@
 import { User } from "../models/user.model.js";
-import { USER_ROLE } from "../utils/constants.js";
+import { STATUS_CODES, USER_ROLE } from "../utils/constants.js";
 import {
   requiredFieldsForResetPassword,
   requiredFieldsForUser,
@@ -44,7 +44,7 @@ export const isAuthenticated = (req, res, next) => {
     const { token } = req.cookies;
 
     if (!token) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: true,
         message: "User doesn't have token",
       });
@@ -53,7 +53,9 @@ export const isAuthenticated = (req, res, next) => {
     const verify = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!verify) {
-      return res.status(400).json({ message: "Token is invalid" });
+      return res
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ message: "Token is invalid" });
     }
 
     req.user = verify;
@@ -61,7 +63,7 @@ export const isAuthenticated = (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `isAuth error ${error}`,
     });
@@ -85,7 +87,7 @@ export const isAdmin = async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (user.userRole !== USER_ROLE.admin) {
-    return res.status(401).json({
+    return res.status(STATUS_CODES.UNAUTHORISED).json({
       success: false,
       message: "User is not an admin, cannot proceed with the request",
     });
@@ -98,7 +100,7 @@ export const isClient = async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (user.userRole !== USER_ROLE.client) {
-    return res.status(401).json({
+    return res.status(STATUS_CODES.UNAUTHORISED).json({
       success: false,
       message: "User is not an client, cannot proceed with the request",
     });
@@ -111,7 +113,7 @@ export const isAdminOrClient = async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (user.userRole !== USER_ROLE.admin && user.userRole !== USER_ROLE.client) {
-    return res.status(401).json({
+    return res.status(STATUS_CODES.UNAUTHORISED).json({
       success: false,
       message:
         "User is not an admin neither client, cannot proceed with the request",
