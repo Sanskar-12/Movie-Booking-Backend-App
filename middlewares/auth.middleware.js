@@ -13,7 +13,7 @@ export const validateUserCreateRequest = (req, res, next) => {
       !req.body[field] ||
       (Array.isArray(req.body[field]) && req.body[field].length === 0)
     ) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: requiredFieldsForUser[field],
       });
@@ -29,7 +29,7 @@ export const validateUserSigninRequest = (req, res, next) => {
       !req.body[field] ||
       (Array.isArray(req.body[field]) && req.body[field].length === 0)
     ) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: requiredFieldsForUserSignIn[field],
       });
@@ -73,7 +73,7 @@ export const isAuthenticated = (req, res, next) => {
 export const validateResetPasswordRequest = async (req, res, next) => {
   for (const field in requiredFieldsForResetPassword) {
     if (!req.body[field]) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: requiredFieldsForResetPassword[field],
       });
