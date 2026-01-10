@@ -1,9 +1,15 @@
 import express from "express";
 import { updateUserRoleOrStatus } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middlewares/auth.middleware.js";
+import { validateUpdateUserRequest } from "../middlewares/user.middleware.js";
 
 const userRouter = express.Router();
 
-userRouter.patch(`/user/:userId`, isAuthenticated, updateUserRoleOrStatus);
+userRouter.patch(
+  `/user/:userId`,
+  isAuthenticated,
+  validateUpdateUserRequest,
+  updateUserRoleOrStatus
+);
 
 export default userRouter;
