@@ -29,7 +29,12 @@ theatreRouter.post(
   createTheatre
 );
 theatreRouter.get(`/theatres/:theatreId`, getTheatre);
-theatreRouter.delete(`/theatres/:theatreId`, isAuthenticated, deleteTheatre);
+theatreRouter.delete(
+  `/theatres/:theatreId`,
+  isAuthenticated,
+  isAdminOrClient,
+  deleteTheatre
+);
 theatreRouter.get(`/theatres`, getAllTheatres);
 theatreRouter.put(
   `/theatres/:theatreId`,
