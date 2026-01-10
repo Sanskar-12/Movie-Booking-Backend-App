@@ -14,13 +14,17 @@ import {
   updateMoviesInTheatre,
   updateTheatre,
 } from "../controllers/theatre.controller.js";
-import { isAuthenticated } from "../middlewares/auth.middleware.js";
+import {
+  isAdminOrClient,
+  isAuthenticated,
+} from "../middlewares/auth.middleware.js";
 
 const theatreRouter = express.Router();
 
 theatreRouter.post(
   `/theatres`,
   isAuthenticated,
+  isAdminOrClient,
   validateCreateTheatreRequest,
   createTheatre
 );

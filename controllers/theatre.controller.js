@@ -1,5 +1,6 @@
 import { Theatre } from "../models/theatre.model.js";
 import mongoose from "mongoose";
+import { STATUS_CODES } from "../utils/constants.js";
 
 export const createTheatre = async (req, res) => {
   try {
@@ -13,14 +14,14 @@ export const createTheatre = async (req, res) => {
       address,
     });
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatre,
       message: "Theatre Created Successfully",
     });
   } catch (error) {
     console.log("Error in createTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `createTheatre Error: ${error}`,
     });
@@ -34,7 +35,7 @@ export const deleteTheatre = async (req, res) => {
     const theatre = await Theatre.findById(theatreId);
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre not found",
       });
@@ -42,13 +43,13 @@ export const deleteTheatre = async (req, res) => {
 
     await theatre.deleteOne();
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Theatre deleted Successfully",
     });
   } catch (error) {
     console.log("Error in deleteTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `deleteTheatre Error: ${error}`,
     });
@@ -62,19 +63,19 @@ export const getTheatre = async (req, res) => {
     const theatre = await Theatre.findById(theatreId);
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre not found",
       });
     }
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatre,
     });
   } catch (error) {
     console.log("Error in getTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getTheatre Error: ${error}`,
     });
@@ -105,7 +106,7 @@ export const getAllTheatres = async (req, res) => {
     const theatres = await Theatre.find(query).skip(skip).limit(Number(limit));
 
     if (!theatres) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatres not found",
       });
@@ -113,7 +114,7 @@ export const getAllTheatres = async (req, res) => {
 
     const total = await Theatre.countDocuments(query);
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatres,
       pagination: {
@@ -125,7 +126,7 @@ export const getAllTheatres = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getAllTheatres", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getAllTheatres Error: ${error}`,
     });
@@ -141,7 +142,7 @@ export const updateTheatre = async (req, res) => {
     const theatre = await Theatre.findById(theatreId);
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre not found",
       });
@@ -165,14 +166,14 @@ export const updateTheatre = async (req, res) => {
 
     await theatre.save();
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatre,
       message: "Theatre Updated Successfully",
     });
   } catch (error) {
     console.log("Error in updateTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `updateTheatre Error: ${error}`,
     });
@@ -188,7 +189,7 @@ export const updateMoviesInTheatre = async (req, res) => {
     const theatre = await Theatre.findById(theatreId);
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre not found",
       });
@@ -212,14 +213,14 @@ export const updateMoviesInTheatre = async (req, res) => {
 
     await theatre.populate("movies");
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatre,
       message: "Movies Updated Successfully in Theatre",
     });
   } catch (error) {
     console.log("Error in updateMoviesInTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `updateMoviesInTheatre Error: ${error}`,
     });
@@ -235,19 +236,19 @@ export const getMoviesInATheatre = async (req, res) => {
       .populate("movies");
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre not found",
       });
     }
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: theatre,
     });
   } catch (error) {
     console.log("Error in getMoviesInATheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getMoviesInATheatre Error: ${error}`,
     });
@@ -261,7 +262,7 @@ export const checkMovieInTheatre = async (req, res) => {
     const theatre = await Theatre.findById(theatreId);
 
     if (!theatre) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Theatre Not Found",
       });
@@ -270,19 +271,19 @@ export const checkMovieInTheatre = async (req, res) => {
     const check = theatre.movies.includes(movieId);
 
     if (check) {
-      return res.status(200).json({
+      return res.status(STATUS_CODES.OK).json({
         success: true,
         message: "Movie is present inside this theatre",
       });
     } else {
-      return res.status(200).json({
+      return res.status(STATUS_CODES.OK).json({
         success: true,
         message: "Movie is not present inside this theatre",
       });
     }
   } catch (error) {
     console.log("Error in checkMovieInTheatre", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `checkMovieInTheatre Error: ${error}`,
     });
