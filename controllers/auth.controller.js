@@ -103,3 +103,37 @@ export const signIn = async (req, res) => {
     });
   }
 };
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    let isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Old Password is invalid",
+      });
+    }
+
+    user.password = newPassword;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      data: user,
+      message: "Reset password successful",
+    });
+  } catch (error) {
+    console.log("Error in resetPassword", error);
+    return res.status(500).json({
+      success: false,
+      message: `resetPassword Error: ${error}`,
+    });
+  }
+};
