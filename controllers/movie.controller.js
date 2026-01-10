@@ -1,4 +1,5 @@
 import { Movie } from "../models/movie.model.js";
+import { STATUS_CODES } from "../utils/constants.js";
 
 export const createMovie = async (req, res) => {
   try {
@@ -24,7 +25,7 @@ export const createMovie = async (req, res) => {
       releaseStatus,
     });
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: movie,
       message: "Created New Movie Successfully",
@@ -32,7 +33,7 @@ export const createMovie = async (req, res) => {
   } catch (error) {
     console.log("Error in createMovie", error.errors);
 
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `create Movie Error: ${error}`,
     });
@@ -46,7 +47,7 @@ export const deleteMovie = async (req, res) => {
     const movie = await Movie.findById(movieId);
 
     if (!movie) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Movie not found",
       });
@@ -54,13 +55,13 @@ export const deleteMovie = async (req, res) => {
 
     await movie.deleteOne();
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       message: "Movie deleted Successfully",
     });
   } catch (error) {
     console.log("Error in deleteMovie", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `deleteMovie Error: ${error}`,
     });
@@ -74,19 +75,19 @@ export const getMovie = async (req, res) => {
     const movie = await Movie.findById(movieId);
 
     if (!movie) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Movie not found",
       });
     }
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: movie,
     });
   } catch (error) {
     console.log("Error in getMovie", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getMovie Error: ${error}`,
     });
@@ -110,7 +111,7 @@ export const updateMovie = async (req, res) => {
     const movie = await Movie.findById(movieId);
 
     if (!movie) {
-      return res.status(404).json({
+      return res.status(STATUS_CODES.NOT_FOUND).json({
         success: false,
         message: "Movie not found",
       });
@@ -127,14 +128,14 @@ export const updateMovie = async (req, res) => {
 
     await movie.save();
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: movie,
       message: "Movie Updated Successfully",
     });
   } catch (error) {
     console.log("Error in updateMovie", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `updateMovie Error: ${error}`,
     });
@@ -154,19 +155,19 @@ export const getMoviesByName = async (req, res) => {
     const movies = await Movie.find(query);
 
     if (!movies) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "No movies found",
       });
     }
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: movies,
     });
   } catch (error) {
     console.log("Error in getMovies", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getMovies Error: ${error}`,
     });

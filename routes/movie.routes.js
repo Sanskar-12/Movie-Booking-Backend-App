@@ -10,13 +10,17 @@ import {
   validateMovieCreateRequest,
   validateMovieUpdateRequest,
 } from "../middlewares/movie.middlewares.js";
-import { isAuthenticated } from "../middlewares/auth.middleware.js";
+import {
+  isAdminOrClient,
+  isAuthenticated,
+} from "../middlewares/auth.middleware.js";
 
 const movieRouter = express.Router();
 
 movieRouter.post(
   "/movies",
   isAuthenticated,
+  isAdminOrClient,
   validateMovieCreateRequest,
   createMovie
 );
