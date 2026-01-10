@@ -1,3 +1,5 @@
+import { User } from "../models/user.model.js";
+import { USER_ROLE } from "../utils/constants.js";
 import {
   requiredFieldsForResetPassword,
   requiredFieldsForUser,
@@ -74,6 +76,46 @@ export const validateResetPasswordRequest = async (req, res, next) => {
         message: requiredFieldsForResetPassword[field],
       });
     }
+  }
+
+  next();
+};
+
+export const isAdmin = async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  if (user.userRole !== USER_ROLE.admin) {
+    return res.status(401).json({
+      success: false,
+      message: "User is not an admin, cannot proceed with the request",
+    });
+  }
+
+  next();
+};
+
+export const isClient = async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  if (user.userRole !== USER_ROLE.client) {
+    return res.status(401).json({
+      success: false,
+      message: "User is not an client, cannot proceed with the request",
+    });
+  }
+
+  next();
+};
+
+export const isAdminOrClient = async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  if (user.userRole !== USER_ROLE.admin && user.userRole !== USER_ROLE.client) {
+    return res.status(401).json({
+      success: false,
+      message:
+        "User is not an admin neither client, cannot proceed with the request",
+    });
   }
 
   next();
