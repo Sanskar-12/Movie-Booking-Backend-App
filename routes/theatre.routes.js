@@ -39,12 +39,14 @@ theatreRouter.get(`/theatres`, getAllTheatres);
 theatreRouter.put(
   `/theatres/:theatreId`,
   isAuthenticated,
+  isAdminOrClient,
   validateUpdateTheatreRequest,
   updateTheatre
 );
 theatreRouter.patch(
   `/theatres/:theatreId`,
   isAuthenticated,
+  isAdminOrClient,
   validateUpdateMoviesInTheatreRequest,
   updateMoviesInTheatre
 );
