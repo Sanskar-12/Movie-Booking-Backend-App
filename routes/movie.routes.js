@@ -24,7 +24,12 @@ movieRouter.post(
   validateMovieCreateRequest,
   createMovie
 );
-movieRouter.delete("/movies/:movieId", isAuthenticated, deleteMovie);
+movieRouter.delete(
+  "/movies/:movieId",
+  isAuthenticated,
+  isAdminOrClient,
+  deleteMovie
+);
 movieRouter.get("/movies/:movieId", getMovie);
 movieRouter.put(
   "/movies/:movieId",
