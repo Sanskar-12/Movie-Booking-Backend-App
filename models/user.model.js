@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { USER_ROLE } from "../utils/constants.js";
 
 const schema = new mongoose.Schema(
   {
@@ -27,7 +28,11 @@ const schema = new mongoose.Schema(
     userRole: {
       type: String,
       required: true,
-      default: "CUSTOMER",
+      enum: {
+        values: [USER_ROLE.admin, USER_ROLE.client, USER_ROLE.customer],
+        message: "Invalid user role given",
+      },
+      default: USER_ROLE.customer,
     },
     userStatus: {
       type: String,

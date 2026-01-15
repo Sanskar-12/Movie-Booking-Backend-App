@@ -1,0 +1,51 @@
+import mongoose from "mongoose";
+import { BOOKING_STATUS } from "../utils/constants.js";
+
+const schema = new mongoose.Schema(
+  {
+    theatreId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Theatre",
+    },
+    movieId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Movie",
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Theatre",
+    },
+    timing: {
+      type: String,
+      required: true,
+    },
+    noOfSeats: {
+      type: Number,
+      required: true,
+    },
+    totalCosts: {
+      type: Number,
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: {
+        values: [
+          BOOKING_STATUS.cancelled,
+          BOOKING_STATUS.processing,
+          BOOKING_STATUS.successful,
+        ],
+        message: "Invalid booking status",
+      },
+      default: BOOKING_STATUS.processing,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const Booking = mongoose.model("Booking", schema);
