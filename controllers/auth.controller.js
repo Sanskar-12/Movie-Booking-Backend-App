@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import generateToken from "../utils/genToken.js";
+import { STATUS_CODES } from "../utils/constants.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ export const signUp = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "User already exists with this email",
       });
@@ -27,7 +28,7 @@ export const signUp = async (req, res) => {
     const userWithoutPassword = user.toObject();
     delete userWithoutPassword.password;
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: user,
       message: "User Signed up Successfully",
@@ -36,19 +37,19 @@ export const signUp = async (req, res) => {
     console.log("Error in signUp", error);
     if (error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
-      return res.status(409).json({
+      return res.status(STATUS_CODES.CONFLICT).json({
         success: false,
         message: `${field} already exists`,
       });
     }
     if (error.name === "ValidationError") {
       const message = Object.values(error.errors)[0].message;
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message,
       });
     }
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `signUp Error: ${error}`,
     });
@@ -62,7 +63,7 @@ export const signIn = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "Email or Password is invalid",
       });
@@ -71,7 +72,7 @@ export const signIn = async (req, res) => {
     let isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "Email or Password is invalid",
       });
@@ -90,14 +91,14 @@ export const signIn = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: userWithoutPassword,
       message: "User Signed in Successfully",
     });
   } catch (error) {
     console.log("Error in signIn", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `signIn Error: ${error}`,
     });
@@ -114,7 +115,7 @@ export const resetPassword = async (req, res) => {
     let isMatch = await bcrypt.compare(oldPassword, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
         success: false,
         message: "Old Password is invalid",
       });
@@ -124,14 +125,14 @@ export const resetPassword = async (req, res) => {
 
     await user.save();
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       success: true,
       data: user,
       message: "Reset password successful",
     });
   } catch (error) {
     console.log("Error in resetPassword", error);
-    return res.status(500).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `resetPassword Error: ${error}`,
     });

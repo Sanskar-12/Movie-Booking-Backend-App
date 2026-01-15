@@ -30,3 +30,10 @@ export const requiredFieldsForResetPassword = {
   oldPassword: "Old Password is required",
   newPassword: "New Password is required",
 };
+
+export const requiredFieldsForCreateBooking = {
+  theatreId: "Theatre Id is required",
+  movieId: "Movie Id is required",
+  timing: "Movie Timing is required",
+  noOfSeats: "No of Seats is required",
+};
