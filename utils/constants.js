@@ -24,3 +24,9 @@ export const BOOKING_STATUS = {
   successful: "SUCCESSFUL",
   processing: "IN_PROCESS",
 };
+
+export const PAYMENT_STATUS = {
+  success: "SUCCESS",
+  failed: "FAILED",
+  pending: "PENDING",
+};
