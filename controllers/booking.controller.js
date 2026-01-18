@@ -69,3 +69,41 @@ export const updateBooking = async (req, res) => {
     });
   }
 };
+
+export const getBookingsOfCurrUser = async (req, res) => {
+  try {
+    const { _id } = req.user;
+
+    const bookings = await Booking.find({
+      userId: _id,
+    });
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      bookings,
+    });
+  } catch (error) {
+    console.log("Error in getBookingsOfCurrUser", error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getBookingsOfCurrUser Error: ${error}`,
+    });
+  }
+};
+
+export const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find({});
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      bookings,
+    });
+  } catch (error) {
+    console.log("Error in getAllBookings", error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getAllBookings Error: ${error}`,
+    });
+  }
+};
