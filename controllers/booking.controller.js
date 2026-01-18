@@ -107,3 +107,37 @@ export const getAllBookings = async (req, res) => {
     });
   }
 };
+
+export const getBookingById = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { bookingId } = req.params;
+
+    const existingBooking = await Booking.findById(bookingId);
+
+    if (!existingBooking) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        success: false,
+        message: "Booking Not Found",
+      });
+    }
+
+    if (existingBooking.userId.toString() !== _id) {
+      return res.status(STATUS_CODES.UNAUTHORISED).json({
+        success: false,
+        message: "Not able to access the booking",
+      });
+    }
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      existingBooking,
+    });
+  } catch (error) {
+    console.log("Error in getBookingById", error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getBookingById Error: ${error}`,
+    });
+  }
+};

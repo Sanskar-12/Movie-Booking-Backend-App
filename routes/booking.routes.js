@@ -2,6 +2,7 @@ import express from "express";
 import {
   createBooking,
   getAllBookings,
+  getBookingById,
   getBookingsOfCurrUser,
   updateBooking,
 } from "../controllers/booking.controller.js";
@@ -27,5 +28,6 @@ bookingRouter.patch(
 );
 bookingRouter.get(`/bookings`, isAuthenticated, getBookingsOfCurrUser);
 bookingRouter.get(`/bookings/all`, isAuthenticated, isAdmin, getAllBookings);
+bookingRouter.get(`/bookings/:bookingId`, isAuthenticated, getBookingById);
 
 export default bookingRouter;
