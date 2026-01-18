@@ -9,7 +9,7 @@ import {
   canChangeStatus,
   validateBookingCreateRequest,
 } from "../middlewares/booking.middleware.js";
-import { isAuthenticated } from "../middlewares/auth.middleware.js";
+import { isAdmin, isAuthenticated } from "../middlewares/auth.middleware.js";
 
 const bookingRouter = express.Router();
 
@@ -26,6 +26,6 @@ bookingRouter.patch(
   updateBooking,
 );
 bookingRouter.get(`/bookings`, isAuthenticated, getBookingsOfCurrUser);
-bookingRouter.get(`/bookings/all`, isAuthenticated, getAllBookings);
+bookingRouter.get(`/bookings/all`, isAuthenticated, isAdmin, getAllBookings);
 
 export default bookingRouter;
