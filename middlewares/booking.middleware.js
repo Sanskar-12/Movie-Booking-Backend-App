@@ -2,7 +2,6 @@ import { requiredFieldsForCreateBooking } from "../utils/index.js";
 import mongoose from "mongoose";
 import { Theatre } from "../models/theatre.model.js";
 import { BOOKING_STATUS, STATUS_CODES, USER_ROLE } from "../utils/constants.js";
-import { Movie } from "../models/movie.model.js";
 import { User } from "../models/user.model.js";
 
 export const validateBookingCreateRequest = async (req, res, next) => {

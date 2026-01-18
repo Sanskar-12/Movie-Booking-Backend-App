@@ -37,3 +37,11 @@ export const requiredFieldsForCreateBooking = {
   timing: "Movie Timing is required",
   noOfSeats: "No of Seats is required",
 };
+
+export const requiredFieldsForCreateShow = {
+  theatreId: "Theatre Id is required",
+  movieId: "Movie Id is required",
+  timing: "Movie Timing is required",
+  noOfSeats: "No of Seats is required",
+  price: "Price is required",
+};
