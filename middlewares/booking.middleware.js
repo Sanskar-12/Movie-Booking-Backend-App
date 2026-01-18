@@ -1,8 +1,9 @@
 import { requiredFieldsForCreateBooking } from "../utils/index.js";
 import mongoose from "mongoose";
 import { Theatre } from "../models/theatre.model.js";
-import { STATUS_CODES } from "../utils/constants.js";
+import { BOOKING_STATUS, STATUS_CODES, USER_ROLE } from "../utils/constants.js";
 import { Movie } from "../models/movie.model.js";
+import { User } from "../models/user.model.js";
 
 export const validateBookingCreateRequest = async (req, res, next) => {
   // required fields validations
@@ -46,6 +47,23 @@ export const validateBookingCreateRequest = async (req, res, next) => {
     return res.status(STATUS_CODES.NOT_FOUND).json({
       success: false,
       message: "Movie is not available inside the theatre",
+    });
+  }
+
+  next();
+};
+
+export const canChangeStatus = async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.userRole === USER_ROLE.customer &&
+    req.body.status &&
+    req.body.status !== BOOKING_STATUS.cancelled
+  ) {
+    return res.status(STATUS_CODES.UNAUTHORISED).json({
+      success: false,
+      message: "You are not allowed to change the booking status",
     });
   }
 
