@@ -90,3 +90,14 @@ export const validateGetAllShowOfMovieInATheatreRequest = async (
   }
   next();
 };
+
+export const validateUpdateShowRequest = async (req, res, next) => {
+  if (req.body.theatreId || req.body.movieId) {
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      success: false,
+      message: "We cannot update theatre or movie for an already existing show",
+    });
+  }
+
+  next();
+};

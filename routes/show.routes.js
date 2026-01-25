@@ -3,10 +3,12 @@ import {
   createShow,
   deleteShow,
   getAllShowsOfMovieInATheatre,
+  updateShow,
 } from "../controllers/show.controller.js";
 import {
   validateCreateShowRequest,
   validateGetAllShowOfMovieInATheatreRequest,
+  validateUpdateShowRequest,
 } from "../middlewares/show.middleware.js";
 import {
   isAdminOrClient,
@@ -33,6 +35,13 @@ showRouter.delete(
   isAuthenticated,
   isAdminOrClient,
   deleteShow,
+);
+showRouter.patch(
+  `/shows/:showId`,
+  isAuthenticated,
+  isAdminOrClient,
+  validateUpdateShowRequest,
+  updateShow,
 );
 
 export default showRouter;

@@ -17,7 +17,7 @@ export const createShow = async (req, res) => {
     return res.status(STATUS_CODES.CREATED).json({
       success: true,
       message: "Show Created successfully",
-      show,
+      data: show,
     });
   } catch (error) {
     console.log("Error in createShow", error.errors);
@@ -45,7 +45,7 @@ export const getAllShowsOfMovieInATheatre = async (req, res) => {
 
     return res.status(STATUS_CODES.OK).json({
       success: true,
-      shows,
+      data: shows,
     });
   } catch (error) {
     console.log("Error in getAllShowsOfMovieInATheatre", error.errors);
@@ -80,6 +80,47 @@ export const deleteShow = async (req, res) => {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `deleteShow Error: ${error}`,
+    });
+  }
+};
+
+export const updateShow = async (req, res) => {
+  try {
+    const { timing, noOfSeats, price } = req.body;
+
+    const { showId } = req.params;
+
+    const show = await Show.findById(showId);
+
+    if (!show) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        success: false,
+        message: "Show not found",
+      });
+    }
+
+    if (timing) {
+      show.timing = timing;
+    }
+    if (noOfSeats) {
+      show.noOfSeats = noOfSeats;
+    }
+    if (price) {
+      show.price = price;
+    }
+
+    await show.save();
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: "Show updated successfully",
+      data: show,
+    });
+  } catch (error) {
+    console.log("Error in updateShow", error.errors);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `updateShow Error: ${error}`,
     });
   }
 };

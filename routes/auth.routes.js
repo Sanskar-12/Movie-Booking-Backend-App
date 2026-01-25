@@ -19,7 +19,7 @@ authRouter.patch(
   `/auth/reset/:userId`,
   isAuthenticated,
   validateResetPasswordRequest,
-  resetPassword
+  resetPassword,
 );
 
 export default authRouter;
