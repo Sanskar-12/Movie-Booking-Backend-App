@@ -37,6 +37,7 @@ const schema = new mongoose.Schema(
           BOOKING_STATUS.cancelled,
           BOOKING_STATUS.processing,
           BOOKING_STATUS.successful,
+          BOOKING_STATUS.expired,
         ],
         message: "Invalid booking status",
       },
@@ -45,7 +46,7 @@ const schema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Booking = mongoose.model("Booking", schema);

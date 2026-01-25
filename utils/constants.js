@@ -18,6 +18,7 @@ export const STATUS_CODES = {
   NOT_FOUND: 404,
   BAD_REQUEST: 400,
   CONFLICT: 409,
+  FORBIDDEN: 403,
 };
 
 export const BOOKING_STATUS = {

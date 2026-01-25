@@ -20,6 +20,13 @@ export const createPayment = async (req, res) => {
       });
     }
 
+    if (booking.status === BOOKING_STATUS.successful) {
+      return res.status(STATUS_CODES.FORBIDDEN).json({
+        success: false,
+        message: "Booking already done, cannot make a new payment against it",
+      });
+    }
+
     let bookingTime = booking.createdAt;
     let currentTime = Date.now();
 
@@ -48,7 +55,7 @@ export const createPayment = async (req, res) => {
       await booking.save();
       await payment.save();
 
-      return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      return res.status(STATUS_CODES.FORBIDDEN).json({
         success: false,
         message: "Payment and Booking Cancelled",
       });
@@ -70,6 +77,32 @@ export const createPayment = async (req, res) => {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `createPayment Error: ${error}`,
+    });
+  }
+};
+
+export const getPaymentById = async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+
+    const payment = await Payment.findById(paymentId).populate("bookingId");
+
+    if (!payment) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        success: false,
+        message: "Payment Not Found",
+      });
+    }
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      data: payment,
+    });
+  } catch (error) {
+    console.log("Error in getPaymentById", error.errors);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getPaymentById Error: ${error}`,
     });
   }
 };
