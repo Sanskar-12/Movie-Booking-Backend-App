@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createShow,
+  deleteShow,
   getAllShowsOfMovieInATheatre,
 } from "../controllers/show.controller.js";
 import {
@@ -26,6 +27,12 @@ showRouter.get(
   isAuthenticated,
   validateGetAllShowOfMovieInATheatreRequest,
   getAllShowsOfMovieInATheatre,
+);
+showRouter.delete(
+  `/shows/:showId`,
+  isAuthenticated,
+  isAdminOrClient,
+  deleteShow,
 );
 
 export default showRouter;

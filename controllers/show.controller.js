@@ -30,7 +30,7 @@ export const createShow = async (req, res) => {
 
 export const getAllShowsOfMovieInATheatre = async (req, res) => {
   try {
-    const filter = {};
+    let filter = {};
 
     const { theatreId, movieId } = req.query;
 
@@ -52,6 +52,34 @@ export const getAllShowsOfMovieInATheatre = async (req, res) => {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getAllShowsOfMovieInATheatre Error: ${error}`,
+    });
+  }
+};
+
+export const deleteShow = async (req, res) => {
+  try {
+    const { showId } = req.params;
+
+    const show = await Show.findById(showId);
+
+    if (!show) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        success: false,
+        message: "Show not found",
+      });
+    }
+
+    await show.deleteOne();
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      message: "Show deleted successfully",
+    });
+  } catch (error) {
+    console.log("Error in deleteShow", error.errors);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `deleteShow Error: ${error}`,
     });
   }
 };
