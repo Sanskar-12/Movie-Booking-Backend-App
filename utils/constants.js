@@ -24,6 +24,7 @@ export const BOOKING_STATUS = {
   cancelled: "CANCELLED",
   successful: "SUCCESSFUL",
   processing: "IN_PROCESS",
+  expired: "EXPIRED",
 };
 
 export const PAYMENT_STATUS = {

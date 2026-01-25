@@ -7,6 +7,7 @@ import userRouter from "./routes/user.routes.js";
 import theatreRouter from "./routes/theatre.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import showRouter from "./routes/show.routes.js";
+import paymentRouter from "./routes/payment.routes.js";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 
@@ -32,6 +33,7 @@ app.use("/mba/api/v1", authRouter);
 app.use("/mba/api/v1", userRouter);
 app.use("/mba/api/v1", bookingRouter);
 app.use("/mba/api/v1", showRouter);
+app.use("/mba/api/v1", paymentRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is listening on port ${process.env.PORT}`);

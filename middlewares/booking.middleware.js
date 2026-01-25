@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { Theatre } from "../models/theatre.model.js";
 import { BOOKING_STATUS, STATUS_CODES, USER_ROLE } from "../utils/constants.js";
 import { User } from "../models/user.model.js";
+import { Show } from "../models/show.model.js";
 
 export const validateBookingCreateRequest = async (req, res, next) => {
   // required fields validations
@@ -46,6 +47,20 @@ export const validateBookingCreateRequest = async (req, res, next) => {
     return res.status(STATUS_CODES.NOT_FOUND).json({
       success: false,
       message: "Movie is not available inside the theatre",
+    });
+  }
+
+  // Find the show exists in that theatre
+  const show = await Show.findOne({
+    theatreId: theatre._id,
+    movieId: req.body.movieId,
+    timing: req.body.timing,
+  });
+
+  if (!show) {
+    return res.status(STATUS_CODES.NOT_FOUND).json({
+      success: false,
+      message: "Show is not available in this theatre",
     });
   }
 
