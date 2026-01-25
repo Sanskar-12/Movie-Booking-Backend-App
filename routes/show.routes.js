@@ -1,6 +1,12 @@
 import express from "express";
-import { createShow } from "../controllers/show.controller.js";
-import { validateCreateShowRequest } from "../middlewares/show.middleware.js";
+import {
+  createShow,
+  getAllShowsOfMovieInATheatre,
+} from "../controllers/show.controller.js";
+import {
+  validateCreateShowRequest,
+  validateGetAllShowOfMovieInATheatreRequest,
+} from "../middlewares/show.middleware.js";
 import {
   isAdminOrClient,
   isAuthenticated,
@@ -14,6 +20,12 @@ showRouter.post(
   isAdminOrClient,
   validateCreateShowRequest,
   createShow,
+);
+showRouter.get(
+  `/shows`,
+  isAuthenticated,
+  validateGetAllShowOfMovieInATheatreRequest,
+  getAllShowsOfMovieInATheatre,
 );
 
 export default showRouter;

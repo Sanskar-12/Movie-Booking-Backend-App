@@ -27,3 +27,31 @@ export const createShow = async (req, res) => {
     });
   }
 };
+
+export const getAllShowsOfMovieInATheatre = async (req, res) => {
+  try {
+    const filter = {};
+
+    const { theatreId, movieId } = req.query;
+
+    if (theatreId) {
+      filter.theatreId = theatreId;
+    }
+    if (movieId) {
+      filter.movieId = movieId;
+    }
+
+    const shows = await Show.find(filter);
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      shows,
+    });
+  } catch (error) {
+    console.log("Error in getAllShowsOfMovieInATheatre", error.errors);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getAllShowsOfMovieInATheatre Error: ${error}`,
+    });
+  }
+};
