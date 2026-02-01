@@ -36,5 +36,7 @@ app.use("/mba/api/v1", showRouter);
 app.use("/mba/api/v1", paymentRouter);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server is listening on port ${process.env.PORT}`);
+  console.log(
+    `Movie Booking Service Server is listening on port ${process.env.PORT}`,
+  );
 });
