@@ -1,11 +1,30 @@
 import { Booking } from "../models/booking.model.js";
+import { Show } from "../models/show.model.js";
 import { STATUS_CODES } from "../utils/constants.js";
 
 export const createBooking = async (req, res) => {
   try {
-    const { theatreId, movieId, timing, noOfSeats, totalCosts } = req.body;
+    const { theatreId, movieId, timing, noOfSeats } = req.body;
 
     const userId = req.user._id;
+
+    const show = await Show.findOne({
+      theatreId,
+      movieId,
+      timing,
+    });
+
+    if (noOfSeats > show.noOfSeats) {
+      return res.status(STATUS_CODES.FORBIDDEN).json({
+        success: false,
+        message: "Requested seats exceed available seats for this show",
+      });
+    }
+
+    let totalCosts = 0;
+
+    totalCosts = show.price * noOfSeats;
+    show.noOfSeats = show.noOfSeats - noOfSeats;
 
     const booking = await Booking.create({
       theatreId,
@@ -15,6 +34,8 @@ export const createBooking = async (req, res) => {
       noOfSeats,
       totalCosts,
     });
+
+    await show.save();
 
     return res.status(STATUS_CODES.CREATED).json({
       success: true,

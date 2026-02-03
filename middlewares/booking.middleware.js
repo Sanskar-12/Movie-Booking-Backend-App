@@ -57,7 +57,7 @@ export const validateBookingCreateRequest = async (req, res, next) => {
     timing: req.body.timing,
   });
 
-  if (!show) {
+  if (!show || show.noOfSeats === 0) {
     return res.status(STATUS_CODES.NOT_FOUND).json({
       success: false,
       message: "Show is not available in this theatre",
