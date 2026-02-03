@@ -1,9 +1,11 @@
 import { Booking } from "../models/booking.model.js";
 import { Payment } from "../models/payment.model.js";
+import { User } from "../models/user.model.js";
 import {
   BOOKING_STATUS,
   PAYMENT_STATUS,
   STATUS_CODES,
+  USER_ROLE,
 } from "../utils/constants.js";
 
 export const createPayment = async (req, res) => {
@@ -103,6 +105,44 @@ export const getPaymentById = async (req, res) => {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: `getPaymentById Error: ${error}`,
+    });
+  }
+};
+
+export const getAllPaymentsOfUser = async (req, res) => {
+  try {
+    const { _id } = req.user;
+
+    let filter = {};
+
+    const user = await User.findById(_id);
+
+    if (!user) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+
+    if (user.userRole !== USER_ROLE.admin) {
+      filter.userId = _id;
+    }
+
+    const bookings = await Booking.find({
+      user: filter.userId,
+    });
+
+    const payments = await Payment.find({ bookingId: { $in: bookings } });
+
+    return res.status(STATUS_CODES.OK).json({
+      success: true,
+      data: payments,
+    });
+  } catch (error) {
+    console.log("Error in getAllPaymentsOfUser", error.errors);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: `getAllPaymentsOfUser Error: ${error}`,
     });
   }
 };
