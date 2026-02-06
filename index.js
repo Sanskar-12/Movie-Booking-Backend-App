@@ -10,6 +10,7 @@ import showRouter from "./routes/show.routes.js";
 import paymentRouter from "./routes/payment.routes.js";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -19,6 +20,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "*",
+  }),
+);
 
 mongoose.set("debug", true);
 

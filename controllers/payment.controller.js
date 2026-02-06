@@ -1,17 +1,22 @@
 import { Booking } from "../models/booking.model.js";
 import { Payment } from "../models/payment.model.js";
 import { User } from "../models/user.model.js";
+import { Movie } from "../models/movie.model.js";
+import { Theatre } from "../models/theatre.model.js";
 import {
   BOOKING_STATUS,
   PAYMENT_STATUS,
   STATUS_CODES,
   USER_ROLE,
 } from "../utils/constants.js";
+import axios from "axios";
+import { Show } from "../models/show.model.js";
 
 export const createPayment = async (req, res) => {
   try {
     const { bookingId } = req.params;
     const { amount } = req.body;
+    const { _id } = req.user;
 
     const booking = await Booking.findById(bookingId);
 
@@ -68,6 +73,28 @@ export const createPayment = async (req, res) => {
     await booking.save();
 
     await payment.save();
+
+    const user = await User.findById(_id);
+    const movie = await Movie.findById(booking.movieId);
+    const theatre = await Theatre.findById(booking.theatreId);
+    try {
+      await axios.post(
+        `${process.env.NOTI_SERVICE}/notifications`,
+        {
+          subject: "Your booking is successful",
+          receipentEmails: [user.email],
+          content: `Your booking for "${movie.name}" at ${theatre.name} 
+      Booking ID: ${booking._id}
+
+      Enjoy the show! 🍿`,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
 
     return res.status(STATUS_CODES.CREATED).json({
       success: false,
