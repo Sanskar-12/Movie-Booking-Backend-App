@@ -6,12 +6,15 @@ export const createTheatre = async (req, res) => {
   try {
     const { name, description, city, pincode, address } = req.body;
 
+    const { _id } = req.user;
+
     const theatre = await Theatre.create({
       name,
       description,
       city,
       pincode,
       address,
+      owner: _id,
     });
 
     return res.status(STATUS_CODES.OK).json({

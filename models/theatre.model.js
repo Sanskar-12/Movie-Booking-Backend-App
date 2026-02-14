@@ -21,6 +21,11 @@ const schema = new mongoose.Schema(
     address: {
       type: String,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     movies: [
       {
         type: mongoose.Schema.ObjectId,
@@ -30,7 +35,7 @@ const schema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Theatre = mongoose.model("Theatre", schema);
